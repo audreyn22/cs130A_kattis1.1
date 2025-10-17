@@ -16,10 +16,6 @@ void explore(int x, int y, int ID, vector<vector<int>> &box, vector<vector<int>>
     stack<pair<int, int>> temp;
     temp.push({x,y});
     
-    //directional arrays
-    int moveRow[4] = {-1, 1, 0, 0};
-    int moveCol[4] = {0, 0, -1, 1};
-    
     //tracks ID of current cc in 'visited' vector
     visited[x][y] = ID;
 
@@ -30,17 +26,32 @@ void explore(int x, int y, int ID, vector<vector<int>> &box, vector<vector<int>>
         int row = curr.first;
         int col = curr.second;
 
-        for(int i = 0; i < 4; i++){
-            //explores all directions from current cell (up, down, left, right)
-            int newRow = row + moveRow[i];
-            int newCol = col + moveCol[i];
-
-            //checks whether cell is apart of current cc and unvisited
-            if(newRow >= 0 && newRow < numRows && newCol >= 0 && newCol < numCols){
-                if(box[newRow][newCol] == type && visited[newRow][newCol] == -1){
-                    visited[newRow][newCol] = ID;
-                    temp.push({newRow, newCol});
-                }
+        //test one row down
+        if(row+1 < numRows && col >= 0 && col < numCols){
+            if(box[row+1][col] == type && visited[row+1][col] == -1){
+                visited[row+1][col] = ID;
+                temp.push({row+1, col});
+            }
+        }
+        //test one row up
+        if(row-1 >= 0 && col >= 0 && col < numCols){
+            if(box[row-1][col] == type && visited[row-1][col] == -1){
+                visited[row-1][col] = ID;
+                temp.push({row-1, col});
+            }
+        }
+        //test one column right
+        if(row >= 0 && row < numRows && col+1 < numCols){
+            if(box[row][col+1] == type && visited[row][col+1] == -1){
+                visited[row][col+1] = ID;
+                temp.push({row, col+1});
+            }
+        }
+        //test one column left
+        if(row >= 0 && row < numRows && col-1 >= 0){
+            if(box[row][col-1] == type && visited[row][col-1] == -1){
+                visited[row][col-1] = ID;
+                temp.push({row, col-1});
             }
         }
     }
